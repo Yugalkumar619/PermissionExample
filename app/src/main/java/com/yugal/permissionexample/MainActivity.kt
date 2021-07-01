@@ -16,14 +16,17 @@ class MainActivity : AppCompatActivity() {
 
         btnCameraPermission.setOnClickListener{
             if(ContextCompat.checkSelfPermission(this,
-                    android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(this@MainActivity, "You already have access",
+                    android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this@MainActivity, "You already have the permission for camera and gps",
                     Toast.LENGTH_LONG).show()
             }else{
                 // Request Permission
                 ActivityCompat.requestPermissions(this@MainActivity,
-                    arrayOf(android.Manifest.permission.CAMERA),
-                    CAMERA_PERMISSION_CODE)
+                    arrayOf(android.Manifest.permission.CAMERA,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    , CAMERA_AND_FINE_LOCATION_PERMISSION_CODE)
             }
         }
 
@@ -32,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == CAMERA_PERMISSION_CODE) {
+        if (requestCode == CAMERA_AND_FINE_LOCATION_PERMISSION_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(
                     this@MainActivity,
@@ -53,5 +56,6 @@ class MainActivity : AppCompatActivity() {
         // We can give any number to permission code.
         private const val CAMERA_PERMISSION_CODE = 1
         private const val FINE_LOCATION_PERMISSION_CODE = 2
+        private const val CAMERA_AND_FINE_LOCATION_PERMISSION_CODE = 12
     }
 }
